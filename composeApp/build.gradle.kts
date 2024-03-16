@@ -5,13 +5,8 @@ plugins {
 }
 
 kotlin {
-    androidTarget {
-        compilations.all {
-            kotlinOptions {
-                jvmTarget = "11"
-            }
-        }
-    }
+    jvmToolchain(17)
+    androidTarget()
     
     listOf(
         iosX64(),
@@ -66,12 +61,13 @@ android {
             isMinifyEnabled = false
         }
     }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-    }
     dependencies {
         debugImplementation(libs.compose.ui.tooling)
     }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.10"
+    }
+    buildFeatures {
+        compose = true
+    }
 }
-
