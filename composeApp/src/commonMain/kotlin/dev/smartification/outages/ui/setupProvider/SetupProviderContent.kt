@@ -13,7 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun SetupProviderContent(provider: String, modifier: Modifier = Modifier) {
+fun SetupProviderContent(screenModel: SetupProviderScreenModel, provider: String, modifier: Modifier = Modifier) {
     Column(modifier = modifier.fillMaxSize()) {
         Row(
             modifier = Modifier

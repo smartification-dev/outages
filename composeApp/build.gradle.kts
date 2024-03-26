@@ -1,13 +1,16 @@
+import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
+
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsCompose)
+    alias(libs.plugins.ksp)
 }
 
 kotlin {
     jvmToolchain(17)
     androidTarget()
-    
+
     listOf(
         iosX64(),
         iosArm64(),
@@ -18,24 +21,45 @@ kotlin {
             isStatic = true
         }
     }
-    
+
     sourceSets {
-        
         androidMain.dependencies {
             implementation(libs.compose.ui.tooling.preview)
             implementation(libs.androidx.activity.compose)
         }
-        commonMain.dependencies {
-            implementation(compose.runtime)
-            implementation(compose.foundation)
-            implementation(compose.material3)
-            implementation(compose.materialIconsExtended)
-            implementation(compose.ui)
-            implementation(compose.components.resources)
-            implementation(compose.components.uiToolingPreview)
-            implementation(libs.bundles.voyager)
+        iosMain.dependencies {
+            implementation(libs.stately.common)
+        }
+        val commonMain by getting {
+            kotlin.srcDir("build/generated/ksp/metadata/commonMain/kotlin")
+            dependencies {
+                implementation(compose.runtime)
+                implementation(compose.foundation)
+                implementation(compose.material3)
+                implementation(compose.materialIconsExtended)
+                implementation(compose.ui)
+                implementation(compose.components.resources)
+                implementation(compose.components.uiToolingPreview)
+                implementation(libs.bundles.voyager)
+                implementation(libs.koin.core)
+                implementation(libs.koin.annotations)
+            }
         }
     }
+}
+
+dependencies {
+    add("kspCommonMainMetadata", libs.koin.compiler)
+}
+
+tasks.withType<KotlinCompile<*>>().configureEach {
+    if (name != "kspCommonMainKotlinMetadata") {
+        dependsOn("kspCommonMainKotlinMetadata")
+    }
+}
+
+ksp {
+    arg("KOIN_CONFIG_CHECK", "true")
 }
 
 android {
