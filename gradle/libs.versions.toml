@@ -38,7 +38,7 @@ voyager-koin = { module = "cafe.adriel.voyager:voyager-koin", version.ref = "voy
 koin-annotations = { module = "io.insert-koin:koin-annotations", version.ref = "koin-ksp" }
 koin-compiler = { module = "io.insert-koin:koin-ksp-compiler", version.ref = "koin-ksp" }
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
-stately-common = "co.touchlab:stately-common:2.0.6"
+stately-common = "co.touchlab:stately-common:2.1.0"
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
